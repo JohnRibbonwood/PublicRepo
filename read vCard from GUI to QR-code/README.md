@@ -2,6 +2,8 @@
 
 A small Windows desktop app (Python + Tkinter). You type in contact details, and it builds a vCard, shows it as a QR code, and saves it as a one-page PDF. Scanning the QR code with a phone camera offers to add the contact.
 
+![vCard QR Generator screenshot](<vCard QR generator.png>)
+
 ## Usage
 
 ```
