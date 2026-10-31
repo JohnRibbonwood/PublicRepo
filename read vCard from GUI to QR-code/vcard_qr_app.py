@@ -6,7 +6,7 @@ from datetime import datetime
 from tkinter import messagebox, ttk
 
 import qrcode
-from PIL import ImageTk
+from PIL import Image, ImageTk
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
@@ -14,8 +14,8 @@ from reportlab.pdfgen import canvas
 OUTPUT_DIR = r"C:\vcardPDFs"
 
 FIELDS = [
-    ("first", "First name *"),
-    ("last", "Last name *"),
+    ("first", "First name"),
+    ("last", "Last name"),
     ("org", "Organization"),
     ("title", "Job title"),
     ("phone", "Phone (work)"),
@@ -131,7 +131,7 @@ class App(tk.Tk):
             return
         try:
             img = make_qr(build_vcard(d))
-            self._photo = ImageTk.PhotoImage(img.resize((320, 320)))
+            self._photo = ImageTk.PhotoImage(img.resize((320, 320), Image.NEAREST))
             self.qr_label.configure(image=self._photo, text="")
             path = save_pdf(img, d)
         except Exception as e:
