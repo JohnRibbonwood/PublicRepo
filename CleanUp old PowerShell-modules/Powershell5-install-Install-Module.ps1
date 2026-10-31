@@ -33,6 +33,7 @@ foreach ($name in $pkgs.Keys) {
     (New-Object Net.WebClient).DownloadFile("https://www.powershellgallery.com/api/v2/package/$name/$ver", $zip)
     if (Test-Path $out) { Remove-Item $out -Recurse -Force }
     [IO.Compression.ZipFile]::ExtractToDirectory($zip, $out)
+    Remove-Item -LiteralPath $zip -Force
     Remove-Item -LiteralPath "$out\_rels","$out\package","$out\[Content_Types].xml","$out\$name.nuspec" -Recurse -Force -ErrorAction SilentlyContinue
 }
 
@@ -52,5 +53,7 @@ Import-Module "$dest\PowerShellGet\2.2.5\PowerShellGet.psd1"
 #
 Write-Host "Set EnvironmentVariable" -ForegroundColor Yellow
 #
+$required = 'C:\Program Files\WindowsPowerShell\Modules', 'C:\Windows\system32\WindowsPowerShell\v1.0\Modules'
 $p = [Environment]::GetEnvironmentVariable('PSModulePath','Machine')
-[Environment]::SetEnvironmentVariable('PSModulePath', "C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules;$p", 'Machine')
+$rest = @($p -split ';' | Where-Object { $_ -and ($required -notcontains $_.TrimEnd('\')) })
+[Environment]::SetEnvironmentVariable('PSModulePath', (($required + $rest) -join ';'), 'Machine')

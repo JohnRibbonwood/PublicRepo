@@ -78,6 +78,8 @@ $transcriptFile = Join-Path $TranscriptFolder "$scriptName-TRANSCRIPT-$timestamp
 # -WhatIf:$false so the transcript is also written during a -WhatIf run.
 # If the log can't be written, stop before deleting anything.
 try {
+    # Windows PowerShell 5.1 doesn't create a missing transcript folder
+    New-Item -ItemType Directory -Path $TranscriptFolder -Force -WhatIf:$false -Confirm:$false -ErrorAction Stop | Out-Null
     Start-Transcript -LiteralPath $transcriptFile -WhatIf:$false -Confirm:$false -ErrorAction Stop
 }
 catch {
