@@ -102,6 +102,7 @@ Done. Deleted: 2  Failed: 0
 
 Every run writes a transcript named `<scriptname>-TRANSCRIPT-<yyyy-MM-dd_HHmmss>.log`, in the script's folder or in `-TranscriptFolder` when given.
 
+- A missing `-TranscriptFolder` is created, also on Windows PowerShell 5.1.
 - If the transcript can't be started (for example, a folder without write access), the script stops with an error **before anything is deleted**.
 - The transcript is always closed, also when there's nothing to delete, when an error occurs, or after Ctrl+C.
 
@@ -134,5 +135,5 @@ Use `-Verbose` to see which directories were skipped and why.
 ## Other scripts
 
 - **List installed modules:** run `PowerShell list all installed modules.cmd` as administrator. The result is saved in the current folder as `Installed_PowerShell_Modules_<computer>_<yyyy-MM-dd_HHmmss>.txt`.
-- **Fix `Install-Module` on Windows PowerShell 5.1:** run `Powershell5-install-Install-Module.cmd` as administrator. It sets the execution policy to `RemoteSigned` for the current user, enables TLS 1.2, downloads PackageManagement 1.4.8.1 and PowerShellGet 2.2.5 from the PowerShell Gallery into `C:\Program Files\WindowsPowerShell\Modules`, imports them, and sets the machine-wide `PSModulePath`.
+- **Fix `Install-Module` on Windows PowerShell 5.1:** run `Powershell5-install-Install-Module.cmd` as administrator. It sets the execution policy to `RemoteSigned` for the current user, enables TLS 1.2, downloads PackageManagement 1.4.8.1 and PowerShellGet 2.2.5 from the PowerShell Gallery into `C:\Program Files\WindowsPowerShell\Modules`, imports them, and puts the two Windows PowerShell module folders at the front of the machine-wide `PSModulePath` (without adding duplicates when run again). The downloaded `.zip` files are deleted afterwards.
 - **Create old versions to test with:** `Powershell5-install-previous-VMware.Vim-module.cmd` and `Powershell7-install-previous-Az.Account-modules.cmd` install several older versions side by side, so the remove script has something to find.
